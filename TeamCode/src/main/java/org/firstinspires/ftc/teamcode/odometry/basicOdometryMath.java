@@ -13,8 +13,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class basicOdometryMath extends LinearOpMode{
 
 //odometry constants (tune these)
-double L = 12.0;  //distance between left and right odometers (in inches)
-double B = 6.0;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
+double L = 9.5;   //distance between left and right odometers (in inches)
+double B = 1.5;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
 double R = 1.0;   //wheel radius (in inches)
 double N = 8192;  //encoder ticks per revoluton
 double inPerTick = 2.0 * Math.PI * R / N;
