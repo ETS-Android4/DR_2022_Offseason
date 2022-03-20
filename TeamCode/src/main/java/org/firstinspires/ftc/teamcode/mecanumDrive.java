@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="odometryTest1")
+@TeleOp(name="mecanumDrive")
 
-public class odometryTest1 extends LinearOpMode{
+public class mecanumDrive extends LinearOpMode{
 
 
         public DcMotor motorRF = null;
