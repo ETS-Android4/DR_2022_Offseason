@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.odometry;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -19,7 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * Created by User on 9/26/2017.
  */
 
-public class RobotHardware
+public class odometryRobotHardware
 {
     //drive motor objects
     public DcMotor motorRF = null;
@@ -34,7 +34,7 @@ public class RobotHardware
 
     HardwareMap hwMap = null;
     
-    public RobotHardware(HardwareMap ahwMap)
+    public odometryRobotHardware(HardwareMap ahwMap)
     {
         //dive motor init
         motorRF = ahwMap.dcMotor.get("motorRF");
