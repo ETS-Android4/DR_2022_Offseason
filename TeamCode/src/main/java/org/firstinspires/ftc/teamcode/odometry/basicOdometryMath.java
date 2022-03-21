@@ -38,6 +38,7 @@ int oldPerpendicularPos = 0;
   //init hardware map
   odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
   robot.resetDriveEncoders();
+  MathFunctions mathFunctions = new MathFunctions();
 
     waitForStart();
 
@@ -64,10 +65,12 @@ int oldPerpendicularPos = 0;
       double dy = inPerTick * (dn3 - (dn2 - dn1) * B / L);
       
       //add the robots movement this loop to the global location
-      double theta += (dtheta / 2.0);
+      double theta = (dtheta / 2.0);
       X += dx * Math.cos(theta) - dy * Math.sin(theta);
       Y += dx * Math.sin(theta) + dy * Math.cos(theta);
       Heading += dtheta;
+
+      mathFunctions.angleWrapRad(Heading);
         
       //telemetry:
       telemetry.addData("rightEncoder", currentRightPos);
@@ -76,7 +79,7 @@ int oldPerpendicularPos = 0;
       
       telemetry.addData("X", X);
       telemetry.addData("Y", Y);
-      telemetry.addData("Heading", Heading);
+      telemetry.addData("Heading", Math.toDegrees(Heading));
 
       telemetry.update();
     }
