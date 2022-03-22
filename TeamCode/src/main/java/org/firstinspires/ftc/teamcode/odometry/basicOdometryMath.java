@@ -38,7 +38,7 @@ int oldPerpendicularPos = 0;
   //init hardware map
   odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
   robot.resetDriveEncoders();
-  MathFunctions mathFunctions = new MathFunctions();
+    odometryMethod odometry = new odometryMethod();
 
     waitForStart();
 
@@ -70,7 +70,7 @@ int oldPerpendicularPos = 0;
       Y += dx * Math.sin(theta) + dy * Math.cos(theta);
       Heading += dtheta;
 
-      mathFunctions.angleWrapRad(Heading);
+      Heading = odometry.angleWrapRad(Heading);
         
       //telemetry:
       telemetry.addData("rightEncoder", currentRightPos);

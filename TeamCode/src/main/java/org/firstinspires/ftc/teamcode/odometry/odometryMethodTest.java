@@ -35,9 +35,9 @@ public class odometryMethodTest extends LinearOpMode{
 
             odometry.refresh();
 
-            telemetry.addData("X", odometry.X);
-            telemetry.addData("Y", odometry.Y);
-            telemetry.addData("Heading", odometry.Heading);
+            telemetry.addData("X", odometry.GlobalX);
+            telemetry.addData("Y", odometry.GlobalY);
+            telemetry.addData("Heading", odometry.GlobalHeading);
 
             telemetry.addData("motorRFPower", robot.motorRF.getPower());
             telemetry.addData("motorRBPower", robot.motorRB.getPower());
