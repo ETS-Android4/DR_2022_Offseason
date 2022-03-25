@@ -53,12 +53,12 @@ import com.qualcomm.robotcore.util.Range;
  * ---------------------------------------------------------------
  * replace "____Encoder = motor__" with the correct motor (the same motor from the port that the odometry encoder shares)
  *
- *
+ **//* the blanks here refer to the words 'left', 'right', and 'perpendicular'*//**
  *
  * replace "odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);" with the chosen hardware map
  *
  *
- *
+ **//* the blanks here refer to a program that will be made in the future*//**
  * using ____, tune the values accordingly
  * 1. enter the radius of the odometer wheel as R
  *      to tune:

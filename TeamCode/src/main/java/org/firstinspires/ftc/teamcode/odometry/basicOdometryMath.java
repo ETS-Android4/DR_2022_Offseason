@@ -13,9 +13,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class basicOdometryMath extends LinearOpMode{
 
 //odometry constants (tune these)
-double L = 9.5;   //distance between left and right odometers (in inches)
-double B = 1.5;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
-double R = 1.0;   //wheel radius (in inches)
+double L = 9.3;   //distance between left and right odometers (in inches)
+double B = -0.738;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
+double R = 0.985;   //wheel radius (in inches)
 double N = 8192;  //encoder ticks per revoluton
 double inPerTick = 2.0 * Math.PI * R / N;
   
@@ -43,6 +43,11 @@ int oldPerpendicularPos = 0;
     waitForStart();
 
     while (opModeIsActive()) {
+
+      robot.motorRF.setPower(((-gamepad1.right_stick_y - gamepad1.right_stick_x) - (-gamepad1.left_stick_x)));
+      robot.motorRB.setPower((-(-gamepad1.right_stick_x + gamepad1.right_stick_y) - (-gamepad1.left_stick_x)));
+      robot.motorLB.setPower(-((gamepad1.right_stick_y + gamepad1.right_stick_x) - (-gamepad1.left_stick_x)));
+      robot.motorLF.setPower(-((-gamepad1.right_stick_x + gamepad1.right_stick_y)) - (-gamepad1.left_stick_x));
       
       //record last loop's encoder reading
       oldRightPos = currentRightPos;
@@ -50,9 +55,9 @@ int oldPerpendicularPos = 0;
       oldPerpendicularPos = currentPerpendicularPos;
       
       //record a new encoder reading this loop
-      currentRightPos = robot.rightEncoder.getCurrentPosition();
-      currentLeftPos = robot.leftEncoder.getCurrentPosition();
-      currentPerpendicularPos = robot.perpendicularEncoder.getCurrentPosition();
+      currentRightPos = -robot.rightEncoder.getCurrentPosition();
+      currentLeftPos = -robot.leftEncoder.getCurrentPosition();
+      currentPerpendicularPos = -robot.perpendicularEncoder.getCurrentPosition();
       
       //find the delta encoder values of each encoder
       int dn1 = currentLeftPos - oldLeftPos;
