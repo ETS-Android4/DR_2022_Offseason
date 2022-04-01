@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.odometry;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -69,15 +71,17 @@ public class odometryRobotHardware
     
     public void resetDriveEncoders() 
     {
-        motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        
-        motorLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
+
+        robot.motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.motorLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.motorLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.motorRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.motorRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
 }

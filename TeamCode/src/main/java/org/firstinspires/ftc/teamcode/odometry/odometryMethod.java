@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.odometry;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -99,11 +100,11 @@ import com.qualcomm.robotcore.util.Range;
 public class odometryMethod extends LinearOpMode {
 
     //odometry constants (tune these)
-    private double L = 9.5;   //distance between left and right odometers (in inches)
-    private double B = 1.5;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
-    private double R = 1.0;   //wheel radius (in inches)
-    private double N = 8192;  //encoder ticks per revoluton
-    private double inPerTick = 2.0 * Math.PI * R / N;
+    double L = 9.33430667;   //distance between left and right odometers (in inches)
+    double B = -1.77319;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
+    double R = 0.985;   //wheel radius (in inches)
+    double N = 8192;  //encoder ticks per revoluton
+    double inPerTick = 2.0 * Math.PI * R / N;
 
     //changes starting location (in inches)
     public double GlobalX = 0;
@@ -124,14 +125,14 @@ public class odometryMethod extends LinearOpMode {
      * calling this method will recalculate the location of the bot, but must be updating regularily inside a loop
      * it will save public values which can be accessed to identify the global position of the robot.
      *
+     * enter motors into the array 0.left, 1.right, 2.perpendicular
+     *
      * for a good explination of the math behind odometry watch this video:
      * https://www.youtube.com/watch?v=Av9ZMjS--gY
      */
 
-    public void refresh()
+    public void refresh(DcMotor[] odometers)
     {
-        //init hardware map
-        odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
 
         //record last loop's encoder reading
         oldRightPos = currentRightPos;
@@ -139,9 +140,9 @@ public class odometryMethod extends LinearOpMode {
         oldPerpendicularPos = currentPerpendicularPos;
 
         //record a new encoder reading this loop
-        currentRightPos = robot.rightEncoder.getCurrentPosition();
-        currentLeftPos = robot.leftEncoder.getCurrentPosition();
-        currentPerpendicularPos = robot.perpendicularEncoder.getCurrentPosition();
+        currentRightPos = odometers[0].getCurrentPosition();
+        currentLeftPos = odometers[1].getCurrentPosition();
+        currentPerpendicularPos = odometers[2].getCurrentPosition();
 
         //find the delta encoder values of each encoder
         int dn1 = currentLeftPos - oldLeftPos;
@@ -184,13 +185,13 @@ public class odometryMethod extends LinearOpMode {
     
     
     //use instead of sleep() in autonomus to keep the location updating
-    public void wait(double waitTime)
+    public void wait(double waitTime, DcMotor[] odometers)
     {
         ElapsedTime time = new ElapsedTime();
         
         while (time.milliseconds() <= waitTime)
         {
-            refresh();
+            refresh(odometers);
         }
     }
 
@@ -209,7 +210,7 @@ public class odometryMethod extends LinearOpMode {
      * https://www.youtube.com/watch?v=3l7ZNJ21wMo (5 parts)
      * the code below uses the code explains in parts 1 & 2
      */
-    public void goToPos(double x, double y, double finalAngle, double moveSpeed, double turnSpeed, double moveAccuracy, double angleAccuracy, double followAngle)
+    public void goToPos(DcMotor[] odometers, double x, double y, double finalAngle, double moveSpeed, double turnSpeed, double moveAccuracy, double angleAccuracy, double followAngle)
     {
         //bring in the encoder and motor objects
         odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
@@ -218,7 +219,7 @@ public class odometryMethod extends LinearOpMode {
         while(Math.abs(x-GlobalX) > moveAccuracy || Math.abs(y-GlobalY) > moveAccuracy || Math.abs(finalAngle - GlobalHeading) > angleAccuracy) {
 
             //update odometry location
-            refresh();
+            refresh(odometers);
 
             //math to calculate distances to the target
             double distanceToTarget = Math.hypot(x - GlobalX, y - GlobalY);
@@ -245,10 +246,10 @@ public class odometryMethod extends LinearOpMode {
             }
 
             //set the motors to the correct powers to move toward the target
-            robot.motorRF.setPower((-movementXpower - movementYpower) - (movementTurnPower));
-            robot.motorRB.setPower(-(-movementYpower + movementXpower) - (movementTurnPower));
-            robot.motorLB.setPower((movementXpower + movementYpower) - (movementTurnPower));
-            robot.motorLF.setPower((-movementYpower + movementXpower) - (movementTurnPower));
+            robot.motorRF.setPower((-movementXpower - movementYpower) - (-movementTurnPower));
+            robot.motorRB.setPower(-(-movementYpower + movementXpower) - (-movementTurnPower));
+            robot.motorLB.setPower(-(movementXpower + movementYpower) - (-movementTurnPower));
+            robot.motorLF.setPower(-(-movementYpower + movementXpower) - (movementTurnPower));
         }
 
         //at the end of the movement stop the motors
@@ -264,7 +265,7 @@ public class odometryMethod extends LinearOpMode {
      * a simple version of goToPos used for testing
      */
 
-    public void goToPosSimple(double x, double y, double finalAngle, double moveAccuracy, double angleAccuracy, double followAngle)
+    public void goToPosSimple(DcMotor[] odometers, double x, double y, double finalAngle, double moveAccuracy, double angleAccuracy, double followAngle)
     {
         //bring in the encoder and motor objects
         odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
@@ -273,7 +274,7 @@ public class odometryMethod extends LinearOpMode {
         while(Math.abs(x-GlobalX) > moveAccuracy || Math.abs(y-GlobalY) > moveAccuracy || Math.abs(finalAngle - GlobalHeading) > angleAccuracy) {
 
             //update odometry location
-            refresh();
+            refresh(odometers);
 
             //math to calculate distances to the target
             double distanceToTarget = Math.hypot(x - GlobalX, y - GlobalY);
@@ -293,10 +294,10 @@ public class odometryMethod extends LinearOpMode {
 
 
             //set the motors to the correct powers to move toward the target
-            robot.motorRF.setPower((-movementXpower - movementYpower) - (movementTurnPower));
-            robot.motorRB.setPower(-(-movementYpower + movementXpower) - (movementTurnPower));
-            robot.motorLB.setPower((movementXpower + movementYpower) - (movementTurnPower));
-            robot.motorLF.setPower((-movementYpower + movementXpower) - (movementTurnPower));
+            robot.motorRF.setPower((-movementXpower - movementYpower) - (-movementTurnPower));
+            robot.motorRB.setPower(-(-movementYpower + movementXpower) - (-movementTurnPower));
+            robot.motorLB.setPower(-(movementXpower + movementYpower) - (-movementTurnPower));
+            robot.motorLF.setPower(-(-movementYpower + movementXpower) - (movementTurnPower));
         }
 
         //at the end of the movement stop the motors

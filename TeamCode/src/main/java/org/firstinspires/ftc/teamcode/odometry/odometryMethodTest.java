@@ -21,23 +21,40 @@ public class odometryMethodTest extends LinearOpMode{
 
 
         odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
-        robot.resetDriveEncoders();
+
+        robot.motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.motorLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.motorLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.motorRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.motorRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         odometryMethod odometry = new odometryMethod();
+
+        DcMotor[] odometers = new DcMotor[3];
+        {
+            odometers[0] = robot.leftEncoder;
+            odometers[1] = robot.rightEncoder;
+            odometers[2] = robot.perpendicularEncoder;
+        }
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            robot.motorRF.setPower(speed*((-gamepad1.right_stick_y - gamepad1.right_stick_x) - (zScale * gamepad1.left_stick_x)));
-            robot.motorRB.setPower(speed*(-(-gamepad1.right_stick_x + gamepad1.right_stick_y) - (zScale * gamepad1.left_stick_x)));
-            robot.motorLB.setPower(speed*((gamepad1.right_stick_y + gamepad1.right_stick_x) - (zScale * gamepad1.left_stick_x)));
-            robot.motorLF.setPower(speed*((-gamepad1.right_stick_x + gamepad1.right_stick_y)) - (zScale * gamepad1.left_stick_x));
+            robot.motorRF.setPower(((-gamepad1.right_stick_y - gamepad1.right_stick_x) - (-gamepad1.left_stick_x)));
+            robot.motorRB.setPower((-(-gamepad1.right_stick_x + gamepad1.right_stick_y) - (-gamepad1.left_stick_x)));
+            robot.motorLB.setPower(-((gamepad1.right_stick_y + gamepad1.right_stick_x) - (-gamepad1.left_stick_x)));
+            robot.motorLF.setPower(-(-gamepad1.right_stick_x + gamepad1.right_stick_y) - (gamepad1.left_stick_x));
 
-            odometry.refresh();
+            odometry.refresh(odometers);
 
             telemetry.addData("X", odometry.GlobalX);
             telemetry.addData("Y", odometry.GlobalY);
-            telemetry.addData("Heading", odometry.GlobalHeading);
+            telemetry.addData("Heading", Math.toDegrees(odometry.GlobalHeading));
 
             telemetry.addData("motorRFPower", robot.motorRF.getPower());
             telemetry.addData("motorRBPower", robot.motorRB.getPower());
