@@ -13,9 +13,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class basicOdometryMath extends LinearOpMode{
 
 //odometry constants (tune these)
-double L = 9.33430667;   //distance between left and right odometers (in inches)
-double B = -1.77319;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
-double R = 0.985;   //wheel radius (in inches)
+double L = 8;   //distance between left and right odometers (in inches)
+double B = -1.75;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
+double R = 0.999631136110775;   //wheel radius (in inches)
 double N = 8192;  //encoder ticks per revoluton
 double inPerTick = 2.0 * Math.PI * R / N;
   
@@ -37,8 +37,29 @@ int oldPerpendicularPos = 0;
 
   //init hardware map
   odometryRobotHardware robot = new odometryRobotHardware(hardwareMap);
-  robot.resetDriveEncoders();
+  telemetry.addData("here",0);
+  telemetry.update();
+
+  //sleep(3000);
+
+  //robot.resetDriveEncoders();
+    robot.motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    robot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    robot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    robot.motorLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    robot.motorLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    robot.motorRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    robot.motorRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    telemetry.addData("here",1);
+    telemetry.update();
+
+    //sleep(3000);
+
     odometryMethod odometry = new odometryMethod();
+    telemetry.addData("here",2);
+    telemetry.update();
 
     waitForStart();
 
