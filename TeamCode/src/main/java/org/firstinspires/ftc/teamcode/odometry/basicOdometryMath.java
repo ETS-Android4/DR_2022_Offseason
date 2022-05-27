@@ -13,8 +13,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class basicOdometryMath extends LinearOpMode{
 
 //odometry constants (tune these)
-double L = 8;   //distance between left and right odometers (in inches)
-double B = -1.75;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
+double L = 8.30118339;   //distance between left and right odometers (in inches)
+double B = -3.1;   //distance from center of left/right encoders to the perpendicular encoder (in inches)
 double R = 0.999631136110775;   //wheel radius (in inches)
 double N = 8192;  //encoder ticks per revoluton
 double inPerTick = 2.0 * Math.PI * R / N;
@@ -65,10 +65,10 @@ int oldPerpendicularPos = 0;
 
     while (opModeIsActive()) {
 
-      robot.motorRF.setPower(((-gamepad1.right_stick_y - gamepad1.right_stick_x) - (-gamepad1.left_stick_x)));
-      robot.motorRB.setPower((-(-gamepad1.right_stick_x + gamepad1.right_stick_y) - (-gamepad1.left_stick_x)));
-      robot.motorLB.setPower(-((gamepad1.right_stick_y + gamepad1.right_stick_x) - (-gamepad1.left_stick_x)));
-      robot.motorLF.setPower(-(-gamepad1.right_stick_x + gamepad1.right_stick_y) - (gamepad1.left_stick_x));
+      robot.motorRF.setPower(.5*((-gamepad1.right_stick_y - gamepad1.right_stick_x) - (-gamepad1.left_stick_x)));
+      robot.motorRB.setPower(.5*(-(-gamepad1.right_stick_x + gamepad1.right_stick_y) - (-gamepad1.left_stick_x)));
+      robot.motorLB.setPower(.5*(-((gamepad1.right_stick_y + gamepad1.right_stick_x) - (-gamepad1.left_stick_x))));
+      robot.motorLF.setPower(.5*(-(-gamepad1.right_stick_x + gamepad1.right_stick_y) - (gamepad1.left_stick_x)));
       
       //record last loop's encoder reading
       oldRightPos = currentRightPos;
